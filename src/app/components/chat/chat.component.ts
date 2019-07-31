@@ -15,6 +15,13 @@ export class ChatComponent {
 
   enviarMensaje() {
     console.log(this.mensaje);
+    if (this.mensaje.length === 0) {
+      return;
+    }
+    this.chatService.agregarMensaje(this.mensaje)
+    .then(() => {console.log('Mensaje Enviado'); this.mensaje = ''; })
+    .catch( () => console.error('Error al Enviar'));
+
   }
 
 }
