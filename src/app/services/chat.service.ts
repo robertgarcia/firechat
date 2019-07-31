@@ -14,16 +14,20 @@ export class ChatService {
   ) { }
 
   cargarMensajes() {
-    this.itemsCollection = this.afs.collection<Mensaje>('chats');
+    this.itemsCollection = this.afs.collection<Mensaje>('chats', ref => ref.orderBy('fecha', 'desc').limit(5));
     return this.itemsCollection.valueChanges().pipe( map( (mensajes: Mensaje[]) => {
-      console.log(mensajes);
-      this.chats = mensajes;
-      return mensajes;
+      // console.log(mensajes);
+      this.chats = [];
+      for (let mensaje of mensajes) {
+        this.chats.unshift(mensaje);
+      }
+      // this.chats = mensajes;
+      return this.chats;
     } ));
   }
 
-  agregarMensaje(texto: string){
-    let mensaje: Mensaje = {
+  agregarMensaje(texto: string) {
+    const mensaje: Mensaje = {
       nombre: 'Demo',
       mensaje: texto,
       fecha: new Date().getTime()
